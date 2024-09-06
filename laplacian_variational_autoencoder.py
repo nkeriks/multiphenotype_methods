@@ -51,7 +51,7 @@ class VariationalLaplacianAutoencoder(VariationalAutoencoder):
                                      minval=-.5, 
                                      maxval=.5,
                                      seed=self.random_seed)
-        Z = Z_mu - Z_sigma * tf.sign(eps) * tf.log(1 - 2 * tf.abs(eps) + 1e-8) 
+        Z = Z_mu - Z_sigma * tf.sign(eps) * tf.math.log(1 - 2 * tf.abs(eps) + 1e-8) 
         return Z, Z_mu, Z_sigma
 
     def set_up_regularization_loss_structure(self):
@@ -71,7 +71,7 @@ class VariationalLaplacianAutoencoder(VariationalAutoencoder):
         # KL(Q, P) = -log(sigma) - 1 + abs(mu) + sigma * exp(-abs(mu) / sigma)
         # which vanishes, as it should, when sigma = 1, mu = 0. 
         
-        kl_div_loss = -tf.log(Z_sigma) - 1 + tf.abs(Z_mu) + Z_sigma * tf.exp(-tf.abs(Z_mu) / Z_sigma)
+        kl_div_loss = -tf.math.log(Z_sigma) - 1 + tf.abs(Z_mu) + Z_sigma * tf.exp(-tf.abs(Z_mu) / Z_sigma)
         kl_div_loss = tf.reduce_mean(
             tf.reduce_sum(
                 kl_div_loss,

@@ -90,7 +90,7 @@ class VariationalAutoencoder(StandardAutoencoder):
         Z_sigma = sigma
 
         # Sample from N(mu, sigma)
-        eps = tf.random_normal(tf.shape(Z_mu), dtype=tf.float32, mean=0., stddev=1.0, seed=self.random_seed)
+        eps = tf.random.normal(tf.shape(Z_mu), dtype=tf.float32, mean=0., stddev=1.0, seed=self.random_seed)
         Z = Z_mu + Z_sigma * eps        
         return Z, Z_mu, Z_sigma
     
@@ -132,7 +132,7 @@ class VariationalAutoencoder(StandardAutoencoder):
     def get_regularization_loss(self, Z_mu, Z_sigma):
         kl_div_loss = -.5 * (
             1 + 
-            2 * tf.log(Z_sigma) - tf.square(Z_mu) - tf.square(Z_sigma))
+            2 * tf.math.log(Z_sigma) - tf.square(Z_mu) - tf.square(Z_sigma))
         kl_div_loss = tf.reduce_mean(
             tf.reduce_sum(
                 kl_div_loss,

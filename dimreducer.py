@@ -310,7 +310,7 @@ class NeuralNetAgePredictor(DimReducer):
         self.model = tf.contrib.learn.DNNRegressor(feature_columns = feature_columns, 
                                                    hidden_units = hidden_unit_layers, 
                                                    model_dir = tf_model_dir,
-                                                   optimizer=tf.train.AdamOptimizer(learning_rate=0.001), 
+                                                   optimizer=tf.compat.v1.train.AdamOptimizer(learning_rate=0.001), 
                                                 config=tf.contrib.learn.RunConfig(save_checkpoints_secs=3))
 
         # Train. 

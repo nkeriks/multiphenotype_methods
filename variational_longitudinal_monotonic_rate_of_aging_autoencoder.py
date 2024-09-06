@@ -29,10 +29,10 @@ class VariationalLongitudinalMonotonicRateOfAgingAutoencoder(VariationalRateOfAg
          
     def init_network(self):
         # define four additional placeholders to store the followup longitudinal ages and values
-        self.lon_ages0 = tf.placeholder("float32", None, name='lon_ages0')
-        self.lon_X0 = tf.placeholder("float32", None, name='lon_X0')
-        self.lon_ages1 = tf.placeholder("float32", None, name='lon_ages1')
-        self.lon_X1 = tf.placeholder("float32", None, name='lon_X1')
+        self.lon_ages0 = tf.compat.v1.placeholder("float32", None, name='lon_ages0')
+        self.lon_X0 = tf.compat.v1.placeholder("float32", None, name='lon_X0')
+        self.lon_ages1 = tf.compat.v1.placeholder("float32", None, name='lon_ages1')
+        self.lon_X1 = tf.compat.v1.placeholder("float32", None, name='lon_X1')
         super(VariationalLongitudinalMonotonicRateOfAgingAutoencoder, self).init_network()
     
     def set_up_encoder_structure(self):

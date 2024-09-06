@@ -146,7 +146,7 @@ class VariationalRateOfAgingAutoencoder(VariationalAutoencoder):
 
         # Sample from N(mu, sigma). The first k_age components are the log unscaled aging rate
         # the components after that are the residual (Z_non_age, just as before)
-        eps = tf.random_normal(tf.shape(encoder_mu), 
+        eps = tf.random.normal(tf.shape(encoder_mu), 
                                     dtype=tf.float32, 
                                     mean=0., 
                                     stddev=1.0, 
@@ -206,7 +206,7 @@ class VariationalRateOfAgingAutoencoder(VariationalAutoencoder):
         if self.learn_aging_rate_scaling_factor_from_data:
             # we exponentiate this because it has to be non-negative. 
             print("Learning aging rate scaling factor from data.")
-            self.log_aging_rate_scaling_factor = tf.Variable(tf.random_normal(shape=[1], 
+            self.log_aging_rate_scaling_factor = tf.Variable(tf.random.normal(shape=[1], 
                                                                               mean=-2,
                                                                               stddev=.1,
                                                                               seed=self.random_seed))
@@ -302,7 +302,7 @@ class VariationalRateOfAgingAutoencoder(VariationalAutoencoder):
         # Pull this out into a method because subclasses use it. 
         kl_div_loss = -.5 * (
             1 + 
-            2 * tf.log(encoder_sigma) - tf.square(encoder_mu) - tf.square(encoder_sigma))
+            2 * tf.math.log(encoder_sigma) - tf.square(encoder_mu) - tf.square(encoder_sigma))
         kl_div_loss = tf.reduce_mean(
             tf.reduce_sum(
                 kl_div_loss,

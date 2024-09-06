@@ -61,7 +61,7 @@ class VariationalAgeAutoencoder(VariationalAutoencoder):
 
         kl_div_loss = -.5 * (
             1 + 
-            2 * tf.log(Z_sigma) - tf.square(Z_mu_diffs) - tf.square(Z_sigma))
+            2 * tf.math.log(Z_sigma) - tf.square(Z_mu_diffs) - tf.square(Z_sigma))
         kl_div_loss = tf.reduce_mean(
             tf.reduce_sum(
                 kl_div_loss,

@@ -65,10 +65,10 @@ class StandardAutoencoder(GeneralAutoencoder):
         self.weights_placeholders = {}
         self.weights_setters = {}
         for key in self.weights:
-            self.weights_placeholders[key] = tf.placeholder(
+            self.weights_placeholders[key] = tf.compat.v1.placeholder(
                 tf.float32,
                 shape=self.weights[key].shape)
-            self.weights_setters[key] = tf.assign(
+            self.weights_setters[key] = tf.compat.v1.assign(
                 self.weights[key], 
                 self.weights_placeholders[key],
                 validate_shape=True)
@@ -76,10 +76,10 @@ class StandardAutoencoder(GeneralAutoencoder):
         self.biases_placeholders = {}
         self.biases_setters = {}
         for key in self.biases:
-            self.biases_placeholders[key] = tf.placeholder(
+            self.biases_placeholders[key] = tf.compat.v1.placeholder(
                 tf.float32,
                 shape=self.biases[key].shape)
-            self.biases_setters[key] = tf.assign(
+            self.biases_setters[key] = tf.compat.v1.assign(
                 self.biases[key], 
                 self.biases_placeholders[key],
                 validate_shape=True)      
@@ -143,7 +143,7 @@ class StandardAutoencoder(GeneralAutoencoder):
                             axis=0)) 
                     + .5 * (
                         self.log_continuous_variance + 
-                        tf.log(2 * np.pi)) 
+                        tf.math.log(2 * np.pi)) 
                     * len(self.continuous_feature_idxs))
             else:
                 # otherwise, it is just a squared-error loss.

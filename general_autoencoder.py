@@ -87,7 +87,7 @@ class GeneralAutoencoder(DimReducer):
             raise Exception("not a valid nonlinear activation")
             
         self.learning_rate = learning_rate
-        self.optimization_method = tf.train.AdamOptimizer
+        self.optimization_method = tf.compat.v1.train.AdamOptimizer
         self.initialization_function = self.glorot_init
         self.initialization_scaling = initialization_scaling # how much should we scale the initialization by to keep from exploding. 
         self.all_losses_by_epoch = []
@@ -150,7 +150,7 @@ class GeneralAutoencoder(DimReducer):
             stddev = 2.
         else:
             stddev = tf.sqrt(2. / shape[0])
-        return self.initialization_scaling*tf.random_normal(shape=shape, stddev=stddev, seed=self.random_seed)
+        return self.initialization_scaling*tf.random.normal(shape=shape, stddev=stddev, seed=self.random_seed)
  
     def init_network(self):
         raise NotImplementedError
@@ -344,19 +344,19 @@ class GeneralAutoencoder(DimReducer):
         
         self.graph = tf.Graph()
         with self.graph.as_default():
-            tf.set_random_seed(self.random_seed)
+            tf.random.set_seed(self.random_seed)
             np.random.seed(self.random_seed)
 
-            self.X = tf.placeholder(dtype="float32", 
+            self.X = tf.compat.v1.placeholder(dtype="float32", 
                                     shape=[None, len(self.feature_names)], 
                                     name='X')
-            self.age_adjusted_X = tf.placeholder(dtype="float32", 
+            self.age_adjusted_X = tf.compat.v1.placeholder(dtype="float32", 
                                                  shape=[None, len(self.feature_names)], 
                                                  name='age_adjusted_X')
-            self.ages = tf.placeholder(dtype="float32", 
+            self.ages = tf.compat.v1.placeholder(dtype="float32", 
                                        shape=None, 
                                        name='ages')
-            self.regularization_weighting = tf.placeholder(dtype="float32", name='regularization_weighting')
+            self.regularization_weighting = tf.compat.v1.placeholder(dtype="float32", name='regularization_weighting')
  
             self.init_network() # set up the networks that produce the encoder and decoder. 
             self.get_setter_ops() # set up ops that allow us to directly set network weights
@@ -377,15 +377,15 @@ class GeneralAutoencoder(DimReducer):
                 self.set_up_longitudinal_loss_and_optimization_structure()
                 
         
-            init = tf.global_variables_initializer()
+            init = tf.compat.v1.global_variables_initializer()
             
             # with tf.Session() as self.sess:
             #config = tf.ConfigProto(gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=.4))
             #self.sess = tf.Session(config=config)  
             
             # create a saver object so we can save the model if we want. 
-            self.saver = tf.train.Saver()
-            self.sess = tf.Session()  
+            self.saver = tf.compat.v1.train.Saver()
+            self.sess = tf.compat.v1.Session()  
             self.sess.run(init)
             min_valid_loss = np.nan
             n_epochs_without_improvement = 0
